@@ -20,12 +20,12 @@ import com.netflix.jmeter.utils.Schema;
 public abstract class Connection
 {
     private static final Logger logger = LoggerFactory.getLogger(Connection.class);
-    public static volatile boolean intialized = false;
+    public static volatile boolean intialized;
     public static Connection connection;
 
     ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
     public volatile Set<String> endpoints;
-    public int port = 0;
+    public int port;
 
     public Connection()
     {
@@ -49,14 +49,15 @@ public abstract class Connection
             temp.add(hp[0]);
             port = Integer.parseInt(hp[1]);
         }
-        assert temp.size() > 0;
+        assert !temp.isEmpty();
         endpoints = temp;
     }
 
     void setupKeyspace()
     {
-        if (Properties.instance.getSchemas().size() == 0)
+        if (Properties.instance.getSchemas().isEmpty()) {
             return;
+        }
         for (String host : endpoints)
         {
             try
@@ -75,8 +76,9 @@ public abstract class Connection
 
     void scheduleDescribeRing()
     {
-        if (endpoints.size() > 1)
+        if (endpoints.size() > 1) {
             return;
+        }
         // sleep for 2 Min
         executor.schedule(new Runnable()
         {
@@ -110,12 +112,14 @@ public abstract class Connection
 
     public static Connection getInstance()
     {
-        if (connection != null)
+        if (connection != null) {
             return connection;
+        }
         synchronized (Connection.class)
         {
-            if (connection != null)
+            if (connection != null) {
                 return connection;
+            }
             try
             {
                 connection = FBUtilities.construct(Properties.instance.cassandra.getClientType(), "Creating Connection");

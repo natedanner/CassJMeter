@@ -22,8 +22,8 @@ import com.netflix.jmeter.utils.CClient;
 
 public class Reader
 {
-    private CClient client;
-    private ConsistencyLevel cl;
+    private final CClient client;
+    private final ConsistencyLevel cl;
     private final String cfName;
 
     public Reader(CClient client, ConsistencyLevel cl, String cfName)

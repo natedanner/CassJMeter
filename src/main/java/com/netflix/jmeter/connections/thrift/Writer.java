@@ -17,8 +17,8 @@ import com.netflix.jmeter.utils.CClient;
 
 public class Writer
 {
-    private CClient client;
-    private ConsistencyLevel cl;
+    private final CClient client;
+    private final ConsistencyLevel cl;
     private final String cfName;
     List<Column> columns = Lists.newArrayList();
 
@@ -45,16 +45,16 @@ public class Writer
 
     public void insert(ByteBuffer key) throws Exception
     {
-        assert columns.size() != 0;
-        Map<ByteBuffer, Map<String, List<Mutation>>> record = new HashMap<ByteBuffer, Map<String, List<Mutation>>>();
+        assert !columns.isEmpty();
+        Map<ByteBuffer, Map<String, List<Mutation>>> record = new HashMap<>();
         record.put(key, getColumnsMutationMap(columns));
         client.batch_mutate(record, cl);
     }
 
     private Map<String, List<Mutation>> getColumnsMutationMap(List<Column> columns)
     {
-        List<Mutation> mutations = new ArrayList<Mutation>();
-        Map<String, List<Mutation>> mutationMap = new HashMap<String, List<Mutation>>();
+        List<Mutation> mutations = new ArrayList<>();
+        Map<String, List<Mutation>> mutationMap = new HashMap<>();
         for (Column c : columns)
         {
             ColumnOrSuperColumn column = new ColumnOrSuperColumn().setColumn(c);

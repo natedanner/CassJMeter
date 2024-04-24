@@ -27,9 +27,9 @@ public abstract class AbstractGUI extends AbstractSamplerGui
 {
     private static final long serialVersionUID = -1372154378991423872L;
     private static final String WIKI = "https://github.com/Netflix/CassJMeter";
-    private JTextField KEY;
-    private JComboBox KSERIALIZER;
-    private JTextField COLUMN_FAMILY;
+    private JTextField key;
+    private JComboBox kserializer;
+    private JTextField columnFamily;
 
     public AbstractGUI()
     {
@@ -46,13 +46,13 @@ public abstract class AbstractGUI extends AbstractSamplerGui
         editConstraints.fill = GridBagConstraints.HORIZONTAL;
         
         addToPanel(mainPanel, labelConstraints, 0, 1, new JLabel("Column Family: ", JLabel.RIGHT));
-        addToPanel(mainPanel, editConstraints, 1, 1, COLUMN_FAMILY = new JTextField());
+        addToPanel(mainPanel, editConstraints, 1, 1, columnFamily = new JTextField());
         addToPanel(mainPanel, labelConstraints, 0, 2, new JLabel("Row Key: ", JLabel.RIGHT));
-        addToPanel(mainPanel, editConstraints, 1, 2, KEY = new JTextField());
+        addToPanel(mainPanel, editConstraints, 1, 2, key = new JTextField());
         init(mainPanel, labelConstraints, editConstraints);
         
         addToPanel(mainPanel, labelConstraints, 0, 10, new JLabel("Key Serializer: ", JLabel.RIGHT));
-        addToPanel(mainPanel, editConstraints, 1, 10, KSERIALIZER = new JComboBox(AbstractSampler.getSerializerNames().toArray()));
+        addToPanel(mainPanel, editConstraints, 1, 10, kserializer = new JComboBox(AbstractSampler.getSerializerNames().toArray()));
         JPanel container = new JPanel(new BorderLayout());
         container.add(mainPanel, BorderLayout.NORTH);
         add(container, BorderLayout.CENTER);
@@ -62,9 +62,9 @@ public abstract class AbstractGUI extends AbstractSamplerGui
     public void clearGui()
     {
         super.clearGui();
-        KEY.setText("${__Random(1,1000)}");
-        KSERIALIZER.setSelectedItem("StringSerializer");
-        COLUMN_FAMILY.setText("Standard3");
+        key.setText("${__Random(1,1000)}");
+        kserializer.setSelectedItem("StringSerializer");
+        columnFamily.setText("Standard3");
         initFields();
         if (Connection.connection != null)
         {
@@ -76,9 +76,9 @@ public abstract class AbstractGUI extends AbstractSamplerGui
     public void configure(TestElement element)
     {
         super.configure(element);
-        KEY.setText(element.getPropertyAsString(AbstractSampler.KEY));
-        KSERIALIZER.setSelectedItem(element.getPropertyAsString(AbstractSampler.KEY_SERIALIZER_TYPE));
-        COLUMN_FAMILY.setText(element.getPropertyAsString(AbstractSampler.COLUMN_FAMILY));
+        key.setText(element.getPropertyAsString(AbstractSampler.KEY));
+        kserializer.setSelectedItem(element.getPropertyAsString(AbstractSampler.KEY_SERIALIZER_TYPE));
+        columnFamily.setText(element.getPropertyAsString(AbstractSampler.COLUMN_FAMILY));
     }
     
     protected void configureTestElement(TestElement mc) 
@@ -87,16 +87,17 @@ public abstract class AbstractGUI extends AbstractSamplerGui
         if (mc instanceof AbstractSampler)
         {
             AbstractSampler gSampler = (AbstractSampler) mc;
-            gSampler.setKSerializerType((String) KSERIALIZER.getSelectedItem());
-            gSampler.setKey(KEY.getText());
-            gSampler.setColumnFamily(COLUMN_FAMILY.getText());
+            gSampler.setKSerializerType((String) kserializer.getSelectedItem());
+            gSampler.setKey(key.getText());
+            gSampler.setColumnFamily(columnFamily.getText());
         }
     }
     
     public static Component addHelpLinkToPanel(Container panel, String helpPage)
     {
-        if (!java.awt.Desktop.isDesktopSupported())
+        if (!java.awt.Desktop.isDesktopSupported()) {
             return panel;
+        }
 
         JLabel icon = new JLabel();
         JLabel link = new JLabel("Help on this plugin");

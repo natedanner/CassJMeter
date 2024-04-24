@@ -34,20 +34,23 @@ public class AstyanaxConnection extends Connection
 
     public Keyspace keyspace()
     {
-        if (keyspace != null)
+        if (keyspace != null) {
             return keyspace;
+        }
 
         synchronized (AstyanaxConnection.class)
         {
             // double check...
-            if (keyspace != null)
+            if (keyspace != null) {
                 return keyspace;
+            }
 
             try
             {
                 File propFile = new File("cassandra.properties");
-                if (propFile.exists())
+                if (propFile.exists()) {
                     config.load(new FileReader(propFile));
+                }
 
                 AstyanaxConfigurationImpl configuration = new AstyanaxConfigurationImpl();
                 configuration.setDiscoveryType(NodeDiscoveryType.valueOf(config.getProperty("astyanax.connection.discovery", "NONE")));
@@ -59,7 +62,7 @@ public class AstyanaxConnection extends Connection
 
                 String property = config.getProperty("astyanax.connection.latency.stategy", "EmptyLatencyScoreStrategyImpl");
                 LatencyScoreStrategy latencyScoreStrategy = null;
-                if (property.equalsIgnoreCase("SmaLatencyScoreStrategyImpl"))
+                if ("SmaLatencyScoreStrategyImpl".equalsIgnoreCase(property))
                 {
                     int updateInterval = Integer.parseInt(config.getProperty("astyanax.connection.latency.stategy.updateInterval", "2000"));
                     int resetInterval = Integer.parseInt(config.getProperty("astyanax.connection.latency.stategy.resetInterval", "10000"));
@@ -116,8 +119,9 @@ public class AstyanaxConnection extends Connection
     @Override
     public void shutdown()
     {
-        if (context == null)
+        if (context == null) {
             return;
+        }
         context.shutdown();
         context = null;
         keyspace = null;

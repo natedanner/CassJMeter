@@ -26,8 +26,8 @@ public class ThriftOperation implements Operation
     protected AbstractSerializer colser;
     protected AbstractSerializer valser;
     protected AbstractSerializer kser;
-    private CClient client;
-    private boolean isCounter;
+    private final CClient client;
+    private final boolean isCounter;
 
     public ThriftOperation(CClient client, String writeConsistency, String readConsistency, String cfName, boolean isCounter)
     {

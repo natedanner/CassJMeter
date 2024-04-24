@@ -59,60 +59,60 @@ public abstract class AbstractSampler extends org.apache.jmeter.samplers.Abstrac
 
     public Object convert(String text, String kSerializerType)
     {
-        if (kSerializerType.equals("StringSerializer"))
+        if ("StringSerializer".equals(kSerializerType))
         {
             return text;
         }
-        else if (kSerializerType.equals("IntegerSerializer"))
+        else if ("IntegerSerializer".equals(kSerializerType))
         {
             return Integer.parseInt(text);
         }
-        else if (kSerializerType.equals("LongSerializer"))
+        else if ("LongSerializer".equals(kSerializerType))
         {
             return Long.parseLong(text);
         }
-        else if (kSerializerType.equals("BooleanSerializer"))
+        else if ("BooleanSerializer".equals(kSerializerType))
         {
             return Boolean.parseBoolean(text);
         }
-        else if (kSerializerType.equals("DoubleSerializer"))
+        else if ("DoubleSerializer".equals(kSerializerType))
         {
             return Double.parseDouble(text);
         }
-        else if (kSerializerType.equals("BooleanSerializer"))
+        else if ("BooleanSerializer".equals(kSerializerType))
         {
             return Boolean.parseBoolean(text);
         }
-        else if (kSerializerType.equals("DateSerializer"))
+        else if ("DateSerializer".equals(kSerializerType))
         {
             return Date.parse(text);
         }
-        else if (kSerializerType.equals("FloatSerializer"))
+        else if ("FloatSerializer".equals(kSerializerType))
         {
             return Float.parseFloat(text);
         }
-        else if (kSerializerType.equals("ShortSerializer"))
+        else if ("ShortSerializer".equals(kSerializerType))
         {
             return Short.parseShort(text);
         }
-        else if (kSerializerType.equals("UUIDSerializer"))
+        else if ("UUIDSerializer".equals(kSerializerType))
         {
             return UUID.fromString(text);
         }
-        else if (kSerializerType.equals("BigIntegerSerializer"))
+        else if ("BigIntegerSerializer".equals(kSerializerType))
         {
             return new BigInteger(text);
         }
-        else if (kSerializerType.equals("CharSerializer"))
+        else if ("CharSerializer".equals(kSerializerType))
         {
             // TODO fix it.
             return text;
         }
-        else if (kSerializerType.equals("AsciiSerializer"))
+        else if ("AsciiSerializer".equals(kSerializerType))
         {
             return text;
         }
-        else if (kSerializerType.equals("BytesArraySerializer"))
+        else if ("BytesArraySerializer".equals(kSerializerType))
         {
             return Hex.hexToBytes(text);
         }
@@ -225,8 +225,9 @@ public abstract class AbstractSampler extends org.apache.jmeter.samplers.Abstrac
              * figure out the connection pooling time... the following applies
              * only for A6x clients. rest will set the latency = 0
              */
-            if (response != null && response.latency_in_ms != 0)
+            if (response != null && response.latency_in_ms != 0) {
                 sr.setIdleTime(latency - response.latency_in_ms);
+            }
         }
         return sr;
     }
@@ -293,10 +294,12 @@ public abstract class AbstractSampler extends org.apache.jmeter.samplers.Abstrac
 
         private static void appendKeyValue(StringBuffer buff, Object cn, Object value)
         {
-            if (cn != null)
-                buff.append(COLUMN_NAME).append(null == cn ? "" :cn).append(SystemUtils.NEW_LINE);
-            if (value != null)
-                buff.append(COLUMN_VALUE).append(null == value ? "" :value).append(SystemUtils.NEW_LINE);
+            if (cn != null) {
+                buff.append(COLUMN_NAME).append(null == cn ? "" : cn).append(SystemUtils.NEW_LINE);
+            }
+            if (value != null) {
+                buff.append(COLUMN_VALUE).append(null == value ? "" : value).append(SystemUtils.NEW_LINE);
+            }
         }
     }
 

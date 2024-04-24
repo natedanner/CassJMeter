@@ -21,13 +21,14 @@ public class ServoSummariser extends AbstractSummariser
 {
     private static final long serialVersionUID = 6638743483539533164L;
     private static final Logger logger = LoggerFactory.getLogger(ServoSummariser.class);
-    private static boolean initalized = false;
+    private static boolean initalized;
 
     @Override
     protected void initializePlatform()
     {
-        if (initalized)
+        if (initalized) {
             return;
+        }
 
         try
         {

@@ -16,15 +16,15 @@ public class CompositGet extends AbstractGUI
 {
     private static final long serialVersionUID = 3197090412869386190L;
     public static String LABEL = "Cassandra Composite Get";
-    private JTextField CNAME;
-    private JComboBox VSERIALIZER;
+    private JTextField cname;
+    private JComboBox vserializer;
 
     @Override
     public void configure(TestElement element)
     {
         super.configure(element);
-        CNAME.setText(element.getPropertyAsString(CompositGetSampler.COLUMN_NAME));
-        VSERIALIZER.setSelectedItem(element.getPropertyAsString(CompositGetSampler.VALUE_SERIALIZER_TYPE));
+        cname.setText(element.getPropertyAsString(CompositGetSampler.COLUMN_NAME));
+        vserializer.setSelectedItem(element.getPropertyAsString(CompositGetSampler.VALUE_SERIALIZER_TYPE));
     }
 
     public TestElement createTestElement()
@@ -42,24 +42,24 @@ public class CompositGet extends AbstractGUI
         if (sampler instanceof CompositGetSampler)
         {
             CompositGetSampler gSampler = (CompositGetSampler) sampler;
-            gSampler.setVSerializerType((String) VSERIALIZER.getSelectedItem());
-            gSampler.setColumnName(CNAME.getText());
+            gSampler.setVSerializerType((String) vserializer.getSelectedItem());
+            gSampler.setColumnName(cname.getText());
         }
     }
 
     public void initFields()
     {
-        CNAME.setText("${__Random(1,1000)}:${__Random(1,1000)}");
-        VSERIALIZER.setSelectedItem("StringSerializer");
+        cname.setText("${__Random(1,1000)}:${__Random(1,1000)}");
+        vserializer.setSelectedItem("StringSerializer");
     }
 
     @Override
     public void init(JPanel mainPanel, GridBagConstraints labelConstraints, GridBagConstraints editConstraints)
     {
         addToPanel(mainPanel, labelConstraints, 0, 3, new JLabel("Column Name: ", JLabel.RIGHT));
-        addToPanel(mainPanel, editConstraints, 1, 3, CNAME = new JTextField());
+        addToPanel(mainPanel, editConstraints, 1, 3, cname = new JTextField());
         addToPanel(mainPanel, labelConstraints, 0, 5, new JLabel("Value Serializer: ", JLabel.RIGHT));
-        addToPanel(mainPanel, editConstraints, 1, 5, VSERIALIZER = new JComboBox(AbstractSampler.getSerializerNames().toArray()));
+        addToPanel(mainPanel, editConstraints, 1, 5, vserializer = new JComboBox(AbstractSampler.getSerializerNames().toArray()));
     }
 
     @Override

@@ -14,7 +14,7 @@ public class Properties
     public static final Properties instance = new Properties();
     public CassandraProperties cassandra;
     public FatclientProperties fatclient;
-    private List<SchemaProperties> schemas = new ArrayList<SchemaProperties>();
+    private final List<SchemaProperties> schemas = new ArrayList<>();
 
     public void addSchema(SchemaProperties newProp)
     {

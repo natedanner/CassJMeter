@@ -15,9 +15,9 @@ import com.netflix.jmeter.sampler.Connection;
 
 public class Schema
 {
-    private static String STATEGY_CLASS = "org.apache.cassandra.locator.NetworkTopologyStrategy";
-    private CClient client;
-    private String ksName;
+    private static final String STATEGY_CLASS = "org.apache.cassandra.locator.NetworkTopologyStrategy";
+    private final CClient client;
+    private final String ksName;
 
     public Schema(CClient client)
     {
@@ -38,15 +38,15 @@ public class Schema
         catch (NotFoundException ex)
         {
             ksd = new KsDef(ksName, STATEGY_CLASS, new ArrayList<CfDef>());
-            Map<String, String> strategy_options = Maps.newHashMap();
+            Map<String, String> strategyOptions = Maps.newHashMap();
             String[] splits = Properties.instance.getSchemas().get(0).getStrategy_options().split(",");
             for (String split : splits)
             {
                 String[] replication = split.split(":");
                 assert replication.length == 2;
-                strategy_options.put(replication[0], replication[1]);
+                strategyOptions.put(replication[0], replication[1]);
             }
-            ksd.setStrategy_options(strategy_options);
+            ksd.setStrategy_options(strategyOptions);
             createColumnFamily(ksd, true);
             client.send_system_add_keyspace(ksd);
         }
@@ -63,8 +63,9 @@ public class Schema
             List<CfDef> list = ksd.getCf_defs() == null ? new ArrayList<CfDef>() : ksd.getCf_defs();
             for (CfDef cfd : list)
             {
-                if (cfd.getName().equals(props.getColumn_family()))
+                if (cfd.getName().equals(props.getColumn_family())) {
                     continue OUTER;
+                }
             }
             
             if (addToKS)

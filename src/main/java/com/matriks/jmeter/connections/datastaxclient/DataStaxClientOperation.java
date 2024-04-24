@@ -37,7 +37,7 @@ public class DataStaxClientOperation implements Operation {
 		}
 
 		public DataStaxClientResponseData(String response, int size, OperationResult<?> result, Object key, Map<?, ?> kv) {
-			super(response, size, (result == null) ? "" : result.getHost().getHostName(), result != null ? result.getLatency(TimeUnit.MILLISECONDS)
+			super(response, size, result == null ? "" : result.getHost().getHostName(), result != null ? result.getLatency(TimeUnit.MILLISECONDS)
 					: 0, key, kv);
 		}
 	}
@@ -130,7 +130,7 @@ public class DataStaxClientOperation implements Operation {
 		
 		try {
 			Row row = rs.getUninterruptibly(1000000, TimeUnit.MILLISECONDS).one();
-			size = row != null ? row.getBytesUnsafe(colName.toString()).capacity() : 0;
+			size = row != null ? row.getBytesUnsafe(colName).capacity() : 0;
 		}
 
 		catch (TimeoutException e) {

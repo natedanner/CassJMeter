@@ -17,19 +17,19 @@ public class CompositPut extends AbstractGUI
 {
     private static final long serialVersionUID = 3197090412869386190L;
     private static final String LABEL = "Cassandra Composite Put";
-    private JTextField CNAME;
-    private JTextField VALUE;
-    private JComboBox VSERIALIZER;
-    private JCheckBox IS_COUNTER;
+    private JTextField cname;
+    private JTextField value;
+    private JComboBox vserializer;
+    private JCheckBox isCounter;
 
     @Override
     public void configure(TestElement element)
     {
         super.configure(element);
-        CNAME.setText(element.getPropertyAsString(CompsitePutSampler.COLUMN_NAME));
-        VALUE.setText(element.getPropertyAsString(CompsitePutSampler.VALUE));
-        VSERIALIZER.setSelectedItem(element.getPropertyAsString(CompsitePutSampler.VALUE_SERIALIZER_TYPE));
-        IS_COUNTER.setSelected(element.getPropertyAsBoolean(CompsitePutSampler.IS_COUNTER));
+        cname.setText(element.getPropertyAsString(CompsitePutSampler.COLUMN_NAME));
+        value.setText(element.getPropertyAsString(CompsitePutSampler.VALUE));
+        vserializer.setSelectedItem(element.getPropertyAsString(CompsitePutSampler.VALUE_SERIALIZER_TYPE));
+        isCounter.setSelected(element.getPropertyAsBoolean(CompsitePutSampler.IS_COUNTER));
     }
 
     public TestElement createTestElement()
@@ -47,32 +47,32 @@ public class CompositPut extends AbstractGUI
         if (sampler instanceof CompsitePutSampler)
         {
             CompsitePutSampler gSampler = (CompsitePutSampler) sampler;
-            gSampler.setVSerializerType((String) VSERIALIZER.getSelectedItem());
-            gSampler.setColumnName(CNAME.getText());
-            gSampler.setValue(VALUE.getText());
-            gSampler.setCounter(IS_COUNTER.isSelected());
+            gSampler.setVSerializerType((String) vserializer.getSelectedItem());
+            gSampler.setColumnName(cname.getText());
+            gSampler.setValue(value.getText());
+            gSampler.setCounter(isCounter.isSelected());
         }
     }
 
     public void initFields()
     {
-        CNAME.setText("${__Random(1,1000)}");
-        VALUE.setText("${__Random(1,1000)}");
-        VSERIALIZER.setSelectedItem("Value Serializer");
-        IS_COUNTER.setSelected(false);
+        cname.setText("${__Random(1,1000)}");
+        value.setText("${__Random(1,1000)}");
+        vserializer.setSelectedItem("Value Serializer");
+        isCounter.setSelected(false);
     }
 
     @Override
     public void init(JPanel mainPanel, GridBagConstraints labelConstraints, GridBagConstraints editConstraints)
     {
         addToPanel(mainPanel, labelConstraints, 0, 3, new JLabel("Column Name: ", JLabel.RIGHT));
-        addToPanel(mainPanel, editConstraints, 1, 3, CNAME = new JTextField());
+        addToPanel(mainPanel, editConstraints, 1, 3, cname = new JTextField());
         addToPanel(mainPanel, labelConstraints, 0, 4, new JLabel("Column Value: ", JLabel.RIGHT));
-        addToPanel(mainPanel, editConstraints, 1, 4, VALUE = new JTextField());
+        addToPanel(mainPanel, editConstraints, 1, 4, value = new JTextField());
         addToPanel(mainPanel, labelConstraints, 0, 6, new JLabel("Value Serializer: ", JLabel.RIGHT));
-        addToPanel(mainPanel, editConstraints, 1, 6, VSERIALIZER = new JComboBox(AbstractSampler.getSerializerNames().toArray()));
+        addToPanel(mainPanel, editConstraints, 1, 6, vserializer = new JComboBox(AbstractSampler.getSerializerNames().toArray()));
         addToPanel(mainPanel, labelConstraints, 0, 7, new JLabel("Counter: ", JLabel.RIGHT));
-        addToPanel(mainPanel, editConstraints, 1, 7, IS_COUNTER = new JCheckBox());
+        addToPanel(mainPanel, editConstraints, 1, 7, isCounter = new JCheckBox());
     }
 
     @Override

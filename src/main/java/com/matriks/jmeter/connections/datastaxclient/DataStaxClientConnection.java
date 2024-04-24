@@ -26,12 +26,14 @@ public class DataStaxClientConnection extends Connection {
 	public Properties config = new Properties();
 
 	public Session session() {
-		if (session != null)
-			return session;
+        if (session != null) {
+            return session;
+        }
 
 		synchronized (DataStaxClientConnection.class) {
-			if (session != null)
-				return session;
+            if (session != null) {
+                return session;
+            }
 
 			try {
 				File propFile = new File("cassandra.properties");
@@ -53,8 +55,9 @@ public class DataStaxClientConnection extends Connection {
 	}
 	
 	public KeyspaceMetadata getKeyspaceMetadata() {
-		if (null == keyspaceMetaData)
-			keyspaceMetaData = session().getCluster().getMetadata().getKeyspace(DataStaxClientConnection.instance.getKeyspaceName());
+        if (null == keyspaceMetaData) {
+            keyspaceMetaData = session().getCluster().getMetadata().getKeyspace(DataStaxClientConnection.instance.getKeyspaceName());
+        }
 		
 		return keyspaceMetaData;
 	}
@@ -71,7 +74,8 @@ public class DataStaxClientConnection extends Connection {
 
 	@Override
 	public void shutdown() {
-		if (cluster != null)
-			cluster.shutdown();
+        if (cluster != null) {
+            cluster.shutdown();
+        }
 	}
 }

@@ -27,8 +27,8 @@ import com.netflix.jmeter.utils.SystemUtils;
 
 public class FatClientOperation extends ThriftOperation
 {
-    private String cf;
-    private String ks;
+    private final String cf;
+    private final String ks;
 
     public FatClientOperation(String writeConsistency, String readConsistency, String ks, String cf, boolean isCounter)
     {
@@ -86,7 +86,7 @@ public class FatClientOperation extends ThriftOperation
         ByteBuffer rKey = kser.toByteBuffer(rkey);
         ByteBuffer name = colser.toByteBuffer(colName);
 
-        List<ReadCommand> commands = new ArrayList<ReadCommand>();
+        List<ReadCommand> commands = new ArrayList<>();
         Collection<ByteBuffer> cols = Lists.newArrayList(name);
         SliceByNamesReadCommand readCommand = new SliceByNamesReadCommand(ks, rKey, new QueryPath(cf, null, null), cols);
         readCommand.setDigestQuery(false);
@@ -125,7 +125,7 @@ public class FatClientOperation extends ThriftOperation
         ByteBuffer sname = colser.toByteBuffer(startColumn);
         ByteBuffer ename = colser.toByteBuffer(endColumn);
         
-        List<ReadCommand> commands = new ArrayList<ReadCommand>();
+        List<ReadCommand> commands = new ArrayList<>();
         ReadCommand readCommand = new SliceFromReadCommand(ks, rKey, new ColumnParent(cf), sname, ename, reversed, count);
         readCommand.setDigestQuery(false);
         commands.add(readCommand);

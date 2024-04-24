@@ -18,8 +18,8 @@ import org.apache.cassandra.thrift.SliceRange;
 
 public class Counter
 {
-    private Client client;
-    private ConsistencyLevel cl;
+    private final Client client;
+    private final ConsistencyLevel cl;
     private final String cfName;
 
     public Counter(Cassandra.Client client, ConsistencyLevel cl, String cfName)
@@ -31,7 +31,7 @@ public class Counter
 
     public void add(ByteBuffer rawKey, List<CounterColumn> columns) throws Exception
     {
-        Map<ByteBuffer, Map<String, List<Mutation>>> record = new HashMap<ByteBuffer, Map<String, List<Mutation>>>();
+        Map<ByteBuffer, Map<String, List<Mutation>>> record = new HashMap<>();
         record.put(rawKey, getColumnsMutationMap(columns));
         client.batch_mutate(record, cl);
     }
@@ -51,8 +51,8 @@ public class Counter
 
     private Map<String, List<Mutation>> getColumnsMutationMap(List<CounterColumn> columns)
     {
-        List<Mutation> mutations = new ArrayList<Mutation>();
-        Map<String, List<Mutation>> mutationMap = new HashMap<String, List<Mutation>>();
+        List<Mutation> mutations = new ArrayList<>();
+        Map<String, List<Mutation>> mutationMap = new HashMap<>();
         for (CounterColumn c : columns)
         {
             ColumnOrSuperColumn cosc = new ColumnOrSuperColumn().setCounter_column(c);

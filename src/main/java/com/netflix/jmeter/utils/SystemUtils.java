@@ -27,10 +27,12 @@ public class SystemUtils
     public static String convertToString(AbstractSerializer<?> ser, ByteBuffer byteBuffer)
     {
         String value;
-        if (ser instanceof BytesArraySerializer)
+        if (ser instanceof BytesArraySerializer) {
             value = Hex.bytesToHex(byteBuffer.array());
-        else
+        }
+        else {
             value = ser.fromByteBuffer(byteBuffer).toString();
+        }
         return value;
     }
     

@@ -22,7 +22,7 @@ import java.lang.reflect.Constructor;
 public class Hex
 {
     private static final Constructor<String> stringConstructor = getProtectedConstructor(String.class, int.class, int.class, char[].class);
-    private final static byte[] charToByte = new byte[256];
+    private static final byte[] charToByte = new byte[256];
 
     // package protected for use by ByteBufferUtil. Do not modify this array !!
     static final char[] byteToChar = new char[16];
@@ -30,14 +30,18 @@ public class Hex
     {
         for (char c = 0; c < charToByte.length; ++c)
         {
-            if (c >= '0' && c <= '9')
-                charToByte[c] = (byte)(c - '0');
-            else if (c >= 'A' && c <= 'F')
-                charToByte[c] = (byte)(c - 'A' + 10);
-            else if (c >= 'a' && c <= 'f')
-                charToByte[c] = (byte)(c - 'a' + 10);
-            else
-                charToByte[c] = (byte)-1;
+            if (c >= '0' && c <= '9') {
+                charToByte[c] = (byte) (c - '0');
+            }
+            else if (c >= 'A' && c <= 'F') {
+                charToByte[c] = (byte) (c - 'A' + 10);
+            }
+            else if (c >= 'a' && c <= 'f') {
+                charToByte[c] = (byte) (c - 'a' + 10);
+            }
+            else {
+                charToByte[c] = (byte) -1;
+            }
         }
 
         for (int i = 0; i < 16; ++i)
@@ -48,16 +52,18 @@ public class Hex
 
     public static byte[] hexToBytes(String str)
     {
-        if (str.length() % 2 == 1)
+        if (str.length() % 2 == 1) {
             throw new NumberFormatException("An hex string representing bytes must have an even length");
+        }
 
         byte[] bytes = new byte[str.length() / 2];
         for (int i = 0; i < bytes.length; i++)
         {
             byte halfByte1 = charToByte[str.charAt(i * 2)];
             byte halfByte2 = charToByte[str.charAt(i * 2 + 1)];
-            if (halfByte1 == -1 || halfByte2 == -1)
+            if (halfByte1 == -1 || halfByte2 == -1) {
                 throw new NumberFormatException("Non-hex characters in " + str);
+            }
             bytes[i] = (byte)((halfByte1 << 4) | halfByte2);
         }
         return bytes;
@@ -81,8 +87,9 @@ public class Hex
      * */
     public static String wrapCharArray(char[] c)
     {
-        if (c == null)
+        if (c == null) {
             return null;
+        }
 
         String s = null;
 

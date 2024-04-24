@@ -48,7 +48,7 @@ public class AstyanaxOperation implements Operation
         
         public AstyanaxResponseData(String response, int size, OperationResult<?> result, Object key, Map<?, ?> kv)
         {
-            super(response, size, (result == null) ? "" : result.getHost().getHostName(), result != null ? result.getLatency(TimeUnit.MILLISECONDS) : 0, key, kv);
+            super(response, size, result == null ? "" : result.getHost().getHostName(), result != null ? result.getLatency(TimeUnit.MILLISECONDS) : 0, key, kv);
         }
     }
     
@@ -70,10 +70,12 @@ public class AstyanaxOperation implements Operation
     public ResponseData put(Object key, Object colName, Object value) throws OperationException
     {
         MutationBatch m = AstyanaxConnection.instance.keyspace().prepareMutationBatch();
-        if (isCounter)
+        if (isCounter) {
             m.withRow(cfs, key).incrementCounterColumn(colName, (Long) value);
-        else
+        }
+        else {
             m.withRow(cfs, key).putColumn(colName, value, valueSerializer, null);
+        }
         try
         {
             OperationResult<Void> result = m.execute();
@@ -97,10 +99,12 @@ public class AstyanaxOperation implements Operation
             ColumnFamily<ByteBuffer, ByteBuffer> columnFamily = new ColumnFamily(cfName, ByteBufferSerializer.get(), ByteBufferSerializer.get());
             ColumnMutation mutation = AstyanaxConnection.instance.keyspace().prepareColumnMutation(columnFamily, rowKey, column);
             OperationResult<Void> result;
-            if (isCounter)
+            if (isCounter) {
                 result = mutation.incrementCounterColumn(LongSerializer.get().fromByteBuffer(value)).execute();
-            else
+            }
+            else {
                 result = mutation.putValue(value, null).execute();
+            }
             return new AstyanaxResponseData("", 0, result, key, colName, value);
         }
         catch (Exception e)
@@ -123,10 +127,12 @@ public class AstyanaxOperation implements Operation
         ColumnListMutation<Object> cf = m.withRow(cfs, key);
         for (Map.Entry<?, ?> entry : nv.entrySet())
         {
-            if (isCounter)
+            if (isCounter) {
                 cf.incrementCounterColumn(entry.getKey(), (Long) entry.getValue());
-            else
+            }
+            else {
                 cf.putColumn(entry.getKey(), entry.getValue(), valueSerializer, null);
+            }
         }
         try
         {
